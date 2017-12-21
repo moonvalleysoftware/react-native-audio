@@ -2,7 +2,6 @@ package com.rnim.rn.audio;
 
 import android.Manifest;
 import android.content.Context;
-import android.media.property.SUPPORT_AUDIO_SOURCE_UNPROCESSED;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -105,13 +104,9 @@ class AudioRecorderManager extends ReactContextBaseJavaModule {
       meteringEnabled = recordingSettings.getBoolean("MeteringEnabled");
       measurementMode = recordingSettings.getBoolean("MeasurementMode");
       if(measurementMode) {
-        if((AudioManager)getCurrentActivity().getSystemService(Context.AUDIO_SERVICE).getProperty(android.media.property.SUPPORT_AUDIO_SOURCE_UNPROCESSED) !=null) {
-          //UNPROCESSED
-          recorder.setAudioSource(9);
-        } else {
           //VOICE_RECOGNITION
-          recorder.setAudioSource(6);
-        }
+        recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION);
+   
       }
     }
     catch(final Exception e) {

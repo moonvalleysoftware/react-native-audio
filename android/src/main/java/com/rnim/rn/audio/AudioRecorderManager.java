@@ -49,7 +49,7 @@ class AudioRecorderManager extends ReactContextBaseJavaModule {
   private boolean meteringEnabled = false;
   private Timer timer;
   private int recorderSecondsElapsed;
-
+  private boolean measurementMode = false;
 
   public AudioRecorderManager(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -100,6 +100,15 @@ class AudioRecorderManager extends ReactContextBaseJavaModule {
       recorder.setAudioEncodingBitRate(recordingSettings.getInt("AudioEncodingBitRate"));
       recorder.setOutputFile(recordingPath);
       meteringEnabled = recordingSettings.getBoolean("MeteringEnabled");
+      measurementMode = recordingSettings.getBoolean("MeasurementMode");
+      if(measurementMode) {
+        AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        if(audioManager.getProperty(AudioManager.PROPERTY_SUPPORT_AUDIO_SOURCE_UNPROCESSED) !=null) {
+          recorder.setAudioSource(MediaRecorder.AudioSource.UNPROCESSED);
+        } else {
+          recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION);
+        }
+      }
     }
     catch(final Exception e) {
       logAndRejectPromise(promise, "COULDNT_CONFIGURE_MEDIA_RECORDER" , "Make sure you've added RECORD_AUDIO permission to your AndroidManifest.xml file "+e.getMessage());

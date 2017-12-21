@@ -54,6 +54,8 @@ class AudioRecorderManager extends ReactContextBaseJavaModule {
   public AudioRecorderManager(ReactApplicationContext reactContext) {
     super(reactContext);
     this.context = reactContext;
+    
+        
   }
 
   @Override
@@ -102,8 +104,7 @@ class AudioRecorderManager extends ReactContextBaseJavaModule {
       meteringEnabled = recordingSettings.getBoolean("MeteringEnabled");
       measurementMode = recordingSettings.getBoolean("MeasurementMode");
       if(measurementMode) {
-        AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-        if(audioManager.getProperty(AudioManager.PROPERTY_SUPPORT_AUDIO_SOURCE_UNPROCESSED) !=null) {
+        if((AudioManager)getCurrentActivity().getSystemService(Context.AUDIO_SERVICE).getProperty(AudioManager.PROPERTY_SUPPORT_AUDIO_SOURCE_UNPROCESSED) !=null) {
           recorder.setAudioSource(MediaRecorder.AudioSource.UNPROCESSED);
         } else {
           recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION);

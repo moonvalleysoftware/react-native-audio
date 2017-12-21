@@ -23,7 +23,6 @@ import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.media.MediaRecorder;
 import android.media.AudioManager;
-import android.media.AudioManager.*;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -105,10 +104,12 @@ class AudioRecorderManager extends ReactContextBaseJavaModule {
       meteringEnabled = recordingSettings.getBoolean("MeteringEnabled");
       measurementMode = recordingSettings.getBoolean("MeasurementMode");
       if(measurementMode) {
-        if((AudioManager)getCurrentActivity().getSystemService(Context.AUDIO_SERVICE).getProperty(AudioManager.PROPERTY_SUPPORT_AUDIO_SOURCE_UNPROCESSED) !=null) {
-          recorder.setAudioSource(MediaRecorder.AudioSource.UNPROCESSED);
+        if((AudioManager)getCurrentActivity().getSystemService(Context.AUDIO_SERVICE).getProperty("android.media.property.SUPPORT_AUDIO_SOURCE_UNPROCESSED") !=null) {
+          //UNPROCESSED
+          recorder.setAudioSource(9);
         } else {
-          recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_RECOGNITION);
+          //VOICE_RECOGNITION
+          recorder.setAudioSource(6);
         }
       }
     }
